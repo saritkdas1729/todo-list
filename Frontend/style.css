@@ -1,10 +1,16 @@
-*, *::before, *::after {
+/* BASE CSS RESET */
+
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
 * {
     margin: 0;
     padding: 0;
+    border: 0;
+    outline: none;
     font: inherit;
 }
 
@@ -12,7 +18,60 @@ body {
     min-height: 100vh;
 }
 
-img, picture, svg, video, canvas {
+img,
+picture,
+svg,
+video,
+canvas {
     display: block;
     max-width: 100%;
+}
+
+/* CUSTOM CSS */
+
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    border: 2px solid;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 500px;
+    max-width: 500px;
+}
+
+.todo-add {
+    height: 40px;
+    display: flex;
+}
+
+.input-text {
+    flex: 1 1 auto;
+    border: 1px solid;
+    padding: 0px 15px;
+}
+
+.button {
+    text-transform: uppercase;
+    color: white;
+    background-color: black;
+    padding: 10px 20px;
+}
+
+
+.todo-container {
+    border: 1px solid;
+    border-bottom: 0;
+}
+
+.todo {
+    /*! border: 1px solid; */
+    padding: 10px 20px;
+    border-bottom: 1px solid;
 }
