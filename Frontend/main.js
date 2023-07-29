@@ -1,9 +1,22 @@
-const todo_list = ['Todo 11', 'Todo 22', 'Todo 33', 'Todo 44'];
+const todo_list = [
+    {'todo' : 'Todo 1'},
+    {'todo' : 'Todo 1'},
+    {'todo' : 'Todo 1'},
+    {'todo' : 'Todo 1'}
+];
 const todo_container = document.querySelector('.todo-container');
 const add_btn = document.getElementById('add-btn');
 const todo_input_box = document.getElementById('todo-input');
 
-generateTodoView(todo_list, todo_container);
+fetch('http://localhost:8085/todo/')
+.then((resp) => resp.json())
+.then((data) => {
+    console.log(data);
+    generateTodoView(data, todo_container);
+})
+.catch((err) => {
+    console.log('Error : ', err);
+})
 
 add_btn.addEventListener('click', (ev) => {
     addTodoEventHandler(todo_list, todo_input_box, todo_container);
@@ -26,7 +39,7 @@ function generateTodoView(todo_list, todo_container) {
     todo_list.forEach((t) => {
         const todo = document.createElement('div');
         todo.classList.add('todo');
-        todo.innerText = t;
+        todo.innerText = t.todo;
         todo_container.appendChild(todo);
     });
 }
