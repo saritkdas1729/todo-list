@@ -35,3 +35,6 @@ target/
 
 # Personal access token
 .token
+
+# Hide environment variables
+env.properties
