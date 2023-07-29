@@ -1,17 +1,13 @@
-const todo_list = [
-    {'todo' : 'Todo 1'},
-    {'todo' : 'Todo 1'},
-    {'todo' : 'Todo 1'},
-    {'todo' : 'Todo 1'}
-];
 const todo_container = document.querySelector('.todo-container');
 const add_btn = document.getElementById('add-btn');
 const todo_input_box = document.getElementById('todo-input');
 
+// fetch all todos from server and 
+// populate todo_container using
+// generateTodoView
 fetch('http://localhost:8085/todo/')
 .then((resp) => resp.json())
 .then((data) => {
-    console.log(data);
     generateTodoView(data, todo_container);
 })
 .catch((err) => {
@@ -19,11 +15,11 @@ fetch('http://localhost:8085/todo/')
 })
 
 add_btn.addEventListener('click', (ev) => {
-    addTodoEventHandler(todo_list, todo_input_box, todo_container);
+    addTodoEventHandler(todo_input_box, todo_container);
 });
 todo_input_box.addEventListener('keydown', (ev) => {
     if (ev.key === 'Enter') {
-        addTodoEventHandler(todo_list, todo_input_box, todo_container);
+        addTodoEventHandler(todo_input_box, todo_container);
     }
 });
 
@@ -44,7 +40,7 @@ function generateTodoView(todo_list, todo_container) {
     });
 }
 
-function addTodoEventHandler(todo_list, todo_input_box, todo_container) {
+function addTodoEventHandler(todo_input_box, todo_container) {
     const value = todo_input_box.value;
 
     if (value === null || value === '') {
@@ -56,6 +52,19 @@ function addTodoEventHandler(todo_list, todo_input_box, todo_container) {
     }
 
     todo_input_box.value = '';
-    todo_list.push(value);
-    generateTodoView(todo_list, todo_container);
+    fetch('http://localhost:8085/todo/', {
+        method : "POST",
+        headers : {
+            "Content-Type": "application/json"
+        },
+        body : JSON.stringify({"todo" : value})
+    })
+    .then((resp) => fetch('http://localhost:8085/todo/'))
+    .then((resp) => resp.json())
+    .then((todo_list) => {
+        generateTodoView(todo_list, todo_container);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
 }
