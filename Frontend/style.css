@@ -57,6 +57,15 @@ body {
     padding: 0px 15px;
 }
 
+.input-text.input-error {
+    border-color: red;
+}
+
+.input-text.input-error::placeholder {
+    color: red;
+    opacity: 1;
+}
+
 .button {
     text-transform: uppercase;
     color: white;

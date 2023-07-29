@@ -1,18 +1,25 @@
 const todo_list = ['Todo 11', 'Todo 22', 'Todo 33', 'Todo 44'];
 const todo_container = document.querySelector('.todo-container');
-const add_btn = document.querySelector('#add-btn');
+const add_btn = document.getElementById('add-btn');
 const todo_input_box = document.getElementById('todo-input');
-// console.log(todo_list);
-// console.log(todo_container);
 
 generateTodoView(todo_list, todo_container);
 
-add_btn.addEventListener('click', addTodoEventHandler);
+add_btn.addEventListener('click', (ev) => {
+    addTodoEventHandler(todo_list, todo_input_box, todo_container);
+});
 todo_input_box.addEventListener('keydown', (ev) => {
     if (ev.key === 'Enter') {
-        addTodoEventHandler(ev);
+        addTodoEventHandler(todo_list, todo_input_box, todo_container);
     }
 });
+
+todo_input_box.addEventListener('input', (ev) => {
+    if (todo_input_box.classList.contains('input-error')) {
+        todo_input_box.classList.remove('input-error');
+    }
+    todo_input_box.placeholder = 'write todos here ...';
+})
 
 function generateTodoView(todo_list, todo_container) {
     todo_container.innerHTML = "";
@@ -24,14 +31,17 @@ function generateTodoView(todo_list, todo_container) {
     });
 }
 
-function addTodoEventHandler(ev) {
-    console.log(ev);
+function addTodoEventHandler(todo_list, todo_input_box, todo_container) {
     const value = todo_input_box.value;
 
     if (value === null || value === '') {
-        console.log('Please enter something in the input box');
+        if (!todo_input_box.classList.contains('input-error')) {
+            todo_input_box.classList.add('input-error');
+            todo_input_box.placeholder = 'please enter a todo here';           
+        }
         return;
     }
+
     todo_input_box.value = '';
     todo_list.push(value);
     generateTodoView(todo_list, todo_container);
