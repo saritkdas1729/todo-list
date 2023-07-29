@@ -3,6 +3,7 @@ package com.sarit.todolistbackend;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,36 +17,37 @@ import org.springframework.web.bind.annotation.RestController;
 public class TodoController {
     
     static class TodoDTO {
+        public Long id;
         public String todo;
 
         public TodoDTO() {}
     }
 
-    private List<TodoDTO> todoList;
+    private TodoRepository todoRepository;
 
-    public TodoController() {
-        this.todoList = new ArrayList<>();
-        
-        TodoDTO td;
-
-        td = new TodoDTO();
-        td.todo = "Learn SpringMVC";
-        todoList.add(td);
-
-        td = new TodoDTO();
-        td.todo = "Create todo app rest api";
-        todoList.add(td);
+    @Autowired
+    public TodoController(TodoRepository todoRepository) {        
+        this.todoRepository = todoRepository;
     }
 
     @GetMapping("/")
     public List<TodoDTO> getTodos() {
-        return this.todoList;
+        return todoRepository.findAll().stream().map((e) -> toTodoDTO(e)).toList();
     }
 
     @PostMapping("/")
     public TodoDTO addTodo(@RequestBody TodoDTO todo) {
-        this.todoList.add(todo);
-        return todo;
+        TodoEntity e = new TodoEntity();
+        e.todo = todo.todo;
+        e = todoRepository.save(e);
+        return toTodoDTO(e);
+    }
+
+    private TodoDTO toTodoDTO(TodoEntity e) {
+        TodoDTO dto = new TodoDTO();
+        dto.id = e.id;
+        dto.todo = e.todo;
+        return dto;
     }
 
 }
