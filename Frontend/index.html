@@ -4,19 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo-List App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="card">
         <div class="todo-add">
             <input type="text" name="todo-input" id="todo-input" class="input-text" placeholder="write todos here ...">
-            <button class="button" id="add-btn">add</button>
+            <button class="btn button" id="add-btn">add</button>
         </div>
         <div class="todo-container">
-            <div class="todo">Todo 1</div>
-            <div class="todo">Todo 2</div>
-            <div class="todo">Todo 3</div>
-            <div class="todo">Todo 4</div>
+            <div class="todo">
+                <div class="todo-text">Todo 1</div>
+                <i class="fa-solid fa-trash btn"></i>
+            </div>
+            <div class="todo">
+                <div class="todo-text">Todo 2</div>
+                <i class="fa-solid fa-trash btn"></i>
+            </div>
+            <div class="todo">
+                <div class="todo-text">Todo 3</div>
+                <i class="fa-solid fa-trash btn"></i>
+            </div>
         </div>
     </div>
     <script src="./main.js"></script>

@@ -20,12 +20,41 @@ api.addTodo = async (todo) => {
     return await resp.json();
 }
 
+api.deleteById = async (id) => {
+    const resp = await fetch('http://localhost:8085/todo/' + id, 
+    {
+        method : "DELETE",
+        headers : {
+                      "Content-Type": "application/json"
+                  }
+    });
+}
+
 view.renderTodos = (todo_list, todo_container) => {
     todo_container.innerHTML = "";
     todo_list.forEach((t) => {
         const todo = document.createElement('div');
         todo.classList.add('todo');
-        todo.innerText = t.todo;
+
+        const todo_text = document.createElement('div');
+        todo_text.classList.add('todo-text');
+        todo_text.innerText = t.todo;
+        todo.appendChild(todo_text);
+
+        const delete_icon = document.createElement('i');
+        delete_icon.classList.add('fa-solid');
+        delete_icon.classList.add('fa-trash');
+        delete_icon.classList.add('btn');
+        delete_icon.addEventListener('click', (ev) => {
+            api.deleteById(t.id)
+            .then(() => api.getAllTodos())
+            .then((todo_list) => view.renderTodos(todo_list, todo_container))
+            .catch((err) => {
+                console.log(err);
+            });
+        });
+        todo.appendChild(delete_icon);
+        
         todo_container.appendChild(todo);
     });
 }
