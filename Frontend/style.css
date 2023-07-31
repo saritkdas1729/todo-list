@@ -96,3 +96,7 @@ body {
 .btn:hover {
     cursor: pointer;
 }
+
+.line-through {
+    text-decoration: line-through;
+}

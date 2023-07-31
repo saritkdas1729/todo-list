@@ -30,17 +30,47 @@ api.deleteById = async (id) => {
     });
 }
 
+api.editTodoById = async (id, todo) => {
+    const resp = await fetch('http://localhost:8085/todo/' + id, 
+    {
+        method : "PUT",
+        headers : {
+                      "Content-Type": "application/json"
+                  },
+        body : JSON.stringify(todo)
+    });
+    if (!resp.ok) return null;
+    return await resp.json();
+}
+
 view.renderTodos = (todo_list, todo_container) => {
     todo_container.innerHTML = "";
     todo_list.forEach((t) => {
         const todo = document.createElement('div');
         todo.classList.add('todo');
-
+        
+        // complete checkbox of todo
+        const chk = document.createElement('input');
+        chk.type = 'checkbox';
+        chk.checked = t.completed;
+        chk.addEventListener('click', (ev) => {
+            api.editTodoById(t.id, {completed : !t.completed})
+            .then((td) => api.getAllTodos())
+            .then((todo_list) => view.renderTodos(todo_list, todo_container))
+            .catch((err) => {
+                console.error(err);
+            });
+        });
+        todo.appendChild(chk);
+        
+        //text of todo
         const todo_text = document.createElement('div');
         todo_text.classList.add('todo-text');
+        if (t.completed) todo_text.classList.add('line-through');
         todo_text.innerText = t.todo;
         todo.appendChild(todo_text);
 
+        //delete button of todo
         const delete_icon = document.createElement('i');
         delete_icon.classList.add('fa-solid');
         delete_icon.classList.add('fa-trash');

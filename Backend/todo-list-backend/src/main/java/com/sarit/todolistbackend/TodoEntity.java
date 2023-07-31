@@ -15,6 +15,8 @@ public class TodoEntity {
     public Long id;
     @Column(nullable = false)
     public String todo;
+    @Column(nullable = false, columnDefinition = "default false")
+    public Boolean completed;
 
     public TodoEntity() {}
 }
